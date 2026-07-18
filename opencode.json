@@ -1,0 +1,182 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/big-pickle",
+  "small_model": "opencode/deepseek-v4-flash-free",
+  "default_agent": "cto",
+  "instructions": ["AGENTS.md"],
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-5a092da3-5139-4b2e-8066-9da1f39d158b"
+      },
+      "enabled": true,
+      "timeout": 10000
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest"],
+      "enabled": true,
+      "timeout": 60000
+    }
+  },
+  "experimental": {
+    "mcp_timeout": 60000
+  },
+  "agent": {
+    "cto": {
+      "model": "opencode/big-pickle",
+      "temperature": 0.2,
+      "color": "#7C3AED",
+      "mode": "subagent",
+      "description": "Chief Technology Officer. Arquitecto técnico que toma decisiones de alto nivel sobre arquitectura, escalabilidad, stack tecnológico y dirección técnica del proyecto.",
+      "permission": {
+        "read": "allow",
+        "edit": "ask",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "bash": {
+          "npm *": "allow",
+          "npx *": "allow",
+          "git *": "allow",
+          "*": "ask"
+        },
+        "task": "allow",
+        "external_directory": "deny",
+        "todowrite": "allow",
+        "question": "allow",
+        "webfetch": "allow",
+        "websearch": "allow"
+      }
+    },
+    "frontend": {
+      "model": "opencode/north-mini-code-free",
+      "temperature": 0.3,
+      "color": "#3B82F6",
+      "mode": "subagent",
+      "description": "Frontend Developer. Desarrolla interfaces de usuario modernas, componentes reutilizables y estilos con React, Next.js, Tailwind CSS y shadcn/ui.",
+      "permission": {
+        "read": "allow",
+        "edit": "ask",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "bash": {
+          "npm *": "allow",
+          "npx *": "allow",
+          "*": "ask"
+        },
+        "task": "allow",
+        "external_directory": "deny",
+        "todowrite": "allow",
+        "question": "allow",
+        "webfetch": "allow",
+        "websearch": "allow"
+      }
+    },
+    "backend": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "temperature": 0.1,
+      "color": "#10B981",
+      "mode": "subagent",
+      "description": "Backend Developer. Desarrolla API routes, lógica de servidor, integraciones con Supabase, autenticación y manejo de base de datos.",
+      "permission": {
+        "read": "allow",
+        "edit": "ask",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "bash": {
+          "npm *": "allow",
+          "npx *": "allow",
+          "supabase *": "allow",
+          "*": "ask"
+        },
+        "task": "allow",
+        "external_directory": "deny",
+        "todowrite": "allow",
+        "question": "allow",
+        "webfetch": "allow",
+        "websearch": "allow"
+      }
+    },
+    "ui-designer": {
+      "model": "opencode/mimo-v2.5-free",
+      "temperature": 0.5,
+      "color": "#F59E0B",
+      "mode": "subagent",
+      "description": "UI/UX Designer. Crea especificaciones de diseño visual detalladas, define paletas de colores, tipografía, espaciados, animaciones y microinteracciones.",
+      "permission": {
+        "read": "allow",
+        "edit": "ask",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "bash": {
+          "*": "ask"
+        },
+        "task": "allow",
+        "external_directory": "deny",
+        "todowrite": "allow",
+        "question": "allow",
+        "webfetch": "allow",
+        "websearch": "allow"
+      }
+    },
+    "devops": {
+      "model": "opencode/nemotron-3-ultra-free",
+      "temperature": 0.1,
+      "color": "#EF4444",
+      "mode": "subagent",
+      "description": "DevOps Engineer. Maneja deploy en Vercel, configuración de CI/CD, migraciones de Supabase, variables de entorno y infraestructura.",
+      "permission": {
+        "read": "allow",
+        "edit": "ask",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "bash": {
+          "npm *": "allow",
+          "npx *": "allow",
+          "git *": "allow",
+          "supabase *": "allow",
+          "vercel *": "allow",
+          "*": "ask"
+        },
+        "task": "allow",
+        "external_directory": "deny",
+        "todowrite": "allow",
+        "question": "allow",
+        "webfetch": "allow",
+        "websearch": "allow"
+      }
+    },
+    "reviewer": {
+      "model": "opencode/big-pickle",
+      "temperature": 0.1,
+      "color": "#6366F1",
+      "mode": "subagent",
+      "description": "Code Reviewer. Revisa código en busca de errores, vulnerabilidades, malas prácticas y oportunidades de mejora. Asegura calidad y consistencia.",
+      "permission": {
+        "read": "allow",
+        "edit": "ask",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "bash": {
+          "npm run lint": "allow",
+          "npm run build": "allow",
+          "*": "ask"
+        },
+        "task": "allow",
+        "external_directory": "deny",
+        "todowrite": "allow",
+        "question": "allow",
+        "webfetch": "allow",
+        "websearch": "allow"
+      }
+    }
+  }
+}
