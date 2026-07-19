@@ -13,3 +13,10 @@ build/
 .DS_Store
 *.log
 npm-debug.log*
+
+# lighthouse / ChromeForTesting tempdirs
+# (artifacts from headless Lighthouse runs in WSL — created when Chrome headless
+# receives a Windows-style profile path and WSL treats it as a literal folder name)
+CUsers*
+*_lighthouse*/
+lighthouse.*
