@@ -33,7 +33,7 @@ export function StickyMobileCta() {
       className={`md:hidden fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 backdrop-blur-sm transition-transform duration-300 ease-out ${
         visible ? "translate-y-0" : "translate-y-full pointer-events-none"
       }`}
-      aria-hidden={!visible}
+      inert={!visible}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 md:px-6 lg:px-8">
         <div className="flex flex-col">
