@@ -66,6 +66,19 @@
   }
 }
 
+/*
+ * Tailwind v4 maps --color-* tokens onto `bg-*` utilities as `background-color:`,
+ * which is invalid for CSS gradient values and silently no-paints. Override the
+ * two landing gradient utilities to emit `background-image:` instead. Token
+ * values are unchanged; only the property the named utility emits is corrected.
+ */
+@utility bg-mockup-card-gradient {
+  background-image: var(--color-mockup-card-gradient);
+}
+@utility bg-landing-hero-gradient {
+  background-image: var(--color-landing-hero-gradient);
+}
+
 /* Reduced motion — global guard */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
