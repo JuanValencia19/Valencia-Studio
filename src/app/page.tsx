@@ -1,22 +1,76 @@
-import { Button } from "@/components/ui/button"
+import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
+
+import {
+  Faq,
+  FinalCta,
+  Footer,
+  HeaderBrand,
+  HonestProof,
+  Hero,
+  ProblemSolution,
+  Process,
+  Showcase,
+  StickyMobileCta,
+} from "@/components/features/landing";
+
+// COPY DIRECTION:
+//   metadata.title — es_CO, descriptive, includes the studio name. Uses
+//   `absolute` so the root layout template (`%s | Valencia Studio`) does NOT
+//   append the brand a second time (the title already starts with "Valencia
+//   Studio"). This is an apply-pass refinement over design's plain string
+//   form, documented in apply-progress.
+//   JSON-LD — real studio fields only. NO fabricated reviews / ratings
+//   (would violate Google's spam policies). `ProfessionalService` is the
+//   correct schema for an early-stage service business.
+
+export const metadata: Metadata = {
+  title: {
+    absolute:
+      "Valencia Studio — Landing pages premium con IA para negocios locales",
+  },
+};
+
+// Multi-type entity (Organization + ProfessionalService) per design § SEO.
+// Typed object → JSON.stringify → valid JSON by construction.
+const orgLd = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "ProfessionalService"],
+  name: "Valencia Studio",
+  description:
+    "Landing pages premium construidas con IA para negocios locales en Colombia.",
+  url: "https://valenciastudio.co",
+  email: "hello@valenciastudio.co",
+  knowsLanguage: ["es"],
+  areaServed: { "@type": "Country", name: "Colombia" },
+  serviceType: "AI-powered landing pages for local businesses",
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-background font-sans">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-center py-32 px-16">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-foreground">
-            Valencia Studio
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-muted-foreground">
-            Landing pages impulsadas por IA para negocios locales
-          </p>
-          <div className="flex gap-4">
-            <Button>Empezar</Button>
-            <Button variant="outline">Documentación</Button>
-          </div>
-        </div>
+    <>
+      {/* Organization + ProfessionalService structured data (page-level) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
+      />
+
+      <HeaderBrand />
+      <main>
+        <Hero />
+        <ProblemSolution />
+        <Process />
+        <Showcase />
+        <HonestProof />
+        <Faq />
+        <FinalCta />
       </main>
-    </div>
-  )
+      <Footer />
+      <StickyMobileCta />
+
+      {/* Vercel Analytics — runtime dep installed in T1. No consent UI in
+          Fase 2 (non-blocking per spec). Script present in built HTML. */}
+      <Analytics />
+    </>
+  );
 }
