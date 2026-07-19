@@ -14,9 +14,6 @@ build/
 *.log
 npm-debug.log*
 
-# lighthouse / ChromeForTesting tempdirs
-# (artifacts from headless Lighthouse runs in WSL — created when Chrome headless
-# receives a Windows-style profile path and WSL treats it as a literal folder name)
+# ChromeForTesting / Lighthouse tempdirs (artifacts from headless Lighthouse runs in WSL)
 CUsers*
 *_lighthouse*/
-lighthouse.*
