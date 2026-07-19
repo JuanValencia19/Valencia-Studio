@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 
+import { SocialNav } from "@/components/features/landing";
 import { Separator } from "@/components/ui/separator";
 
 // COPY DIRECTION:
@@ -7,9 +8,9 @@ import { Separator } from "@/components/ui/separator";
 //   contactLabel  — "Escríbenos", links to the same mailto as FinalCta.
 //   Disabled secondaryLinks — "Próximamente" (privacy / TyC pages don't exist
 //   yet). Render honestly disabled rather than at broken routes.
-// Prohibited: fabricated social handles / fake social icons. The studio has no
-// real social profiles yet — we OMIT them rather than lie. Re-enable when
-// real handles exist.
+// Social nav — real handles only (obs #28): LinkedIn + Instagram. Solo-iconos
+// silencioso per user-locked decision #1. Do NOT invent X / GitHub / YouTube /
+// TikTok / Facebook. See SocialNav.tsx.
 
 const CONTACT_EMAIL = "juanjovt16@gmail.com";
 const MAILTO_HREF = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
@@ -44,6 +45,7 @@ export function Footer() {
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
               Landings premium con IA para negocios locales de Colombia.
             </p>
+            <SocialNav />
           </div>
 
           <nav
