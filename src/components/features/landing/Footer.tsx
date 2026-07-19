@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 // real social profiles yet — we OMIT them rather than lie. Re-enable when
 // real handles exist.
 
-const CONTACT_EMAIL = "hello@valenciastudio.co";
+const CONTACT_EMAIL = "juanjovt16@gmail.com";
 const MAILTO_HREF = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
   "Hola Valencia Studio",
 )}`;

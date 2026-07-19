@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 // COPY DIRECTION:
 //   heading   — es_CO, single result-oriented value prop, no fake urgency.
 //   body      — 1-2 sentences echoing hero mechanism (IA + diseño premium).
-//   primaryCta — FIXED: "Solicitar cotización" → mailto:hello@valenciastudio.co
+//   primaryCta — FIXED: "Solicitar cotización" → mailto:juanjovt16@gmail.com
 //                with prefilled subject + body (Spanish-neutral).
 //   microcopy — FIXED direction: "Sin compromiso · Respuesta en 24h".
 // Prohibited: form elements, submit handlers, Supabase, backend calls.
 
-const CONTACT_EMAIL = "hello@valenciastudio.co";
+const CONTACT_EMAIL = "juanjovt16@gmail.com";
 
 const MAILTO_BODY = [
   "Hola Valencia Studio,",
