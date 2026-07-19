@@ -9,7 +9,7 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "CONTEXT7_API_KEY": "ctx7sk-5a092da3-5139-4b2e-8066-9da1f39d158b"
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       },
       "enabled": true,
       "timeout": 10000
@@ -177,6 +177,17 @@
         "webfetch": "allow",
         "websearch": "allow"
       }
-    }
+    },
+    "gentle-orchestrator": { "model": "opencode-go/glm-5.1" },
+    "sdd-init": { "model": "opencode-go/glm-5.1" },
+    "sdd-explore": { "model": "opencode-go/glm-5.1" },
+    "sdd-propose": { "model": "opencode-go/glm-5.1" },
+    "sdd-spec": { "model": "opencode-go/glm-5.1" },
+    "sdd-design": { "model": "opencode-go/glm-5.1" },
+    "sdd-tasks": { "model": "opencode-go/glm-5.1" },
+    "sdd-apply": { "model": "opencode-go/glm-5.1" },
+    "sdd-verify": { "model": "opencode-go/glm-5.1" },
+    "sdd-archive": { "model": "opencode-go/glm-5.1" },
+    "sdd-onboard": { "model": "opencode-go/glm-5.1" }
   }
 }
