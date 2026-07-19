@@ -41,6 +41,10 @@ const orgLd = {
     "Landing pages premium construidas con IA para negocios locales en Colombia.",
   url: "https://valenciastudio.co",
   email: "juanjovt16@gmail.com",
+  sameAs: [
+    "https://www.linkedin.com/in/juan-jose-valencia-trejos-a9b952272/",
+    "https://www.instagram.com/juanchitovt/",
+  ],
   knowsLanguage: ["es"],
   areaServed: { "@type": "Country", name: "Colombia" },
   serviceType: "AI-powered landing pages for local businesses",
