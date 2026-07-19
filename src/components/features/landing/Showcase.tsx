@@ -74,7 +74,7 @@ export function Showcase() {
                         className="size-12 text-primary-foreground"
                         aria-hidden="true"
                       />
-                      <div className="text-sm font-medium text-primary-foreground/90">
+                      <div className="text-sm font-medium text-primary-foreground">
                         {item.label}
                       </div>
                     </div>
