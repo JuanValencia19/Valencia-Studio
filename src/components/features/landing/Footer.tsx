@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 
+import { SocialNav } from "@/components/features/landing";
 import { Separator } from "@/components/ui/separator";
 
 // COPY DIRECTION:
@@ -7,9 +8,9 @@ import { Separator } from "@/components/ui/separator";
 //   contactLabel  — "Escríbenos", links to the same mailto as FinalCta.
 //   Disabled secondaryLinks — "Próximamente" (privacy / TyC pages don't exist
 //   yet). Render honestly disabled rather than at broken routes.
-// Prohibited: fabricated social handles / fake social icons. The studio has no
-// real social profiles yet — we OMIT them rather than lie. Re-enable when
-// real handles exist.
+// Social nav — real handles only (obs #28): LinkedIn + Instagram. Solo-iconos
+// silencioso per user-locked decision #1. Do NOT invent X / GitHub / YouTube /
+// TikTok / Facebook. See SocialNav.tsx.
 
 const CONTACT_EMAIL = "juanjovt16@gmail.com";
 const MAILTO_HREF = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
@@ -44,6 +45,7 @@ export function Footer() {
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
               Landings premium con IA para negocios locales de Colombia.
             </p>
+            <SocialNav />
           </div>
 
           <nav
@@ -81,7 +83,6 @@ export function Footer() {
             <span
               aria-disabled="true"
               role="link"
-              aria-label="Política de privacidad — próximamente"
               className="w-fit cursor-not-allowed select-none text-muted-foreground/70 md:ml-auto"
             >
               Política de privacidad · Próximamente
@@ -89,7 +90,6 @@ export function Footer() {
             <span
               aria-disabled="true"
               role="link"
-              aria-label="Términos y condiciones — próximamente"
               className="w-fit cursor-not-allowed select-none text-muted-foreground/70 md:ml-auto"
             >
               Términos y condiciones · Próximamente
@@ -103,7 +103,7 @@ export function Footer() {
           <p>© {YEAR} Valencia Studio. Todos los derechos reservados.</p>
           <p>
             Hecho en Colombia ·{" "}
-            <span className="text-muted-foreground/70">v0 · early-stage</span>
+            <span className="text-muted-foreground">v0 · early-stage</span>
           </p>
         </div>
       </div>
