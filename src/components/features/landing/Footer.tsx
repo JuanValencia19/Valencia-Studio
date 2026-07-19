@@ -81,7 +81,6 @@ export function Footer() {
             <span
               aria-disabled="true"
               role="link"
-              aria-label="Política de privacidad — próximamente"
               className="w-fit cursor-not-allowed select-none text-muted-foreground/70 md:ml-auto"
             >
               Política de privacidad · Próximamente
@@ -89,7 +88,6 @@ export function Footer() {
             <span
               aria-disabled="true"
               role="link"
-              aria-label="Términos y condiciones — próximamente"
               className="w-fit cursor-not-allowed select-none text-muted-foreground/70 md:ml-auto"
             >
               Términos y condiciones · Próximamente
@@ -103,7 +101,7 @@ export function Footer() {
           <p>© {YEAR} Valencia Studio. Todos los derechos reservados.</p>
           <p>
             Hecho en Colombia ·{" "}
-            <span className="text-muted-foreground/70">v0 · early-stage</span>
+            <span className="text-muted-foreground">v0 · early-stage</span>
           </p>
         </div>
       </div>
