@@ -41,6 +41,38 @@
   --radius-xl: calc(var(--radius) + 4px);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Landing — subtle violet radial wash on white (brand only) */
+  --color-landing-hero-gradient:
+    radial-gradient(ellipse 80% 50% at 50% 0%,
+      oklch(0.55 0.20 285 / 0.08) 0%,
+      oklch(0.55 0.20 285 / 0.00) 60%);
+  /* Mockup placeholder — 135° violet family, decreasing chroma + opacity */
+  --color-mockup-card-gradient:
+    linear-gradient(135deg,
+      oklch(0.55 0.20 285) 0%,
+      oklch(0.62 0.18 285 / 0.85) 45%,
+      oklch(0.72 0.18 285 / 0.60) 100%);
+  /* Soft card shadow — tinted brand violet */
+  --shadow-soft:
+    0 1px 2px oklch(0.55 0.20 285 / 0.04),
+    0 8px 24px oklch(0.55 0.20 285 / 0.08);
+  /* Entrance animation */
+  --animate-fade-up: fade-up 500ms ease-out both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Reduced motion — global guard */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 :root {
