@@ -19,7 +19,7 @@ export function PipelineControl({ onPipelineComplete }: PipelineControlProps) {
   useEffect(() => {
     fetch("/api/industries")
       .then((res) => res.json())
-      .then((data) => setIndustries(data))
+      .then((data) => setIndustries(Array.isArray(data) ? data : []))
       .catch(() => {});
   }, []);
 
