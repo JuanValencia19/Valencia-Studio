@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/auth";
 import { sendEmail } from "@/lib/email/client";
 import { generateProposalEmail } from "@/lib/email/templates/proposal";
 import { z } from "zod";
@@ -14,15 +14,8 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: leadId } = await params;
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if (auth.error) return auth.error;
 
   const body = await request.json();
 
@@ -35,7 +28,7 @@ export async function POST(
   }
 
   // Fetch the proposal
-  const { data: proposal, error: proposalError } = await supabase
+  const { data: proposal, error: proposalError } = await auth.supabase
     .from("proposals")
     .select("*")
     .eq("id", parsed.data.proposalId)
@@ -50,7 +43,7 @@ export async function POST(
   }
 
   // Fetch the lead
-  const { data: lead, error: leadError } = await supabase
+  const { data: lead, error: leadError } = await auth.supabase
     .from("leads")
     .select("name")
     .eq("id", leadId)
@@ -76,7 +69,7 @@ export async function POST(
     });
 
     // Update proposal status
-    await supabase
+    await auth.supabase
       .from("proposals")
       .update({
         status: "sent",
@@ -86,9 +79,9 @@ export async function POST(
       .eq("id", parsed.data.proposalId);
 
     // Create contact attempt record
-    await supabase.from("contact_attempts").insert({
+    await auth.supabase.from("contact_attempts").insert({
       lead_id: leadId,
-      user_id: user.id,
+      user_id: auth.user!.id,
       proposal_id: parsed.data.proposalId,
       channel: "email",
       contact_type: "email",

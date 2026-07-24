@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/auth";
 import { z } from "zod";
 
 const CreateIndustrySchema = z.object({
@@ -20,20 +20,13 @@ const CreateIndustrySchema = z.object({
 });
 
 export async function GET() {
-  const supabase = await createClient();
+  const auth = await requireAdmin();
+  if (auth.error) return auth.error;
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { data, error } = await supabase
+  const { data, error } = await auth.supabase
     .from("industries")
     .select("*")
-    .eq("user_id", user.id)
+    .eq("user_id", auth.user!.id)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -44,15 +37,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if (auth.error) return auth.error;
 
   const body = await request.json();
 
@@ -71,10 +57,10 @@ export async function POST(request: NextRequest) {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
-  const { data, error } = await supabase
+  const { data, error } = await auth.supabase
     .from("industries")
     .insert({
-      user_id: user.id,
+      user_id: auth.user!.id,
       name: parsed.data.name,
       slug,
       icon: parsed.data.icon || null,

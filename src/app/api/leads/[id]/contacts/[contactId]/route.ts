@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/auth";
 import { z } from "zod";
 
 const UpdateContactSchema = z.object({
@@ -17,15 +17,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string; contactId: string }> }
 ) {
   const { contactId } = await params;
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if (auth.error) return auth.error;
 
   const body = await request.json();
 
@@ -37,7 +30,7 @@ export async function PATCH(
     );
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await auth.supabase
     .from("contact_attempts")
     .update(parsed.data)
     .eq("id", contactId)
@@ -56,17 +49,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string; contactId: string }> }
 ) {
   const { contactId } = await params;
-  const supabase = await createClient();
+  const auth = await requireAdmin();
+  if (auth.error) return auth.error;
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { error } = await supabase
+  const { error } = await auth.supabase
     .from("contact_attempts")
     .delete()
     .eq("id", contactId);

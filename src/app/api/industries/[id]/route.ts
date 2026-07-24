@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/auth";
 import { z } from "zod";
 
 const UpdateIndustrySchema = z.object({
@@ -25,21 +25,14 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const supabase = await createClient();
+  const auth = await requireAdmin();
+  if (auth.error) return auth.error;
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { data, error } = await supabase
+  const { data, error } = await auth.supabase
     .from("industries")
     .select("*")
     .eq("id", id)
-    .eq("user_id", user.id)
+    .eq("user_id", auth.user!.id)
     .single();
 
   if (error) {
@@ -54,15 +47,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if (auth.error) return auth.error;
 
   const body = await request.json();
 
@@ -84,11 +70,11 @@ export async function PATCH(
       .replace(/-+/g, "-");
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await auth.supabase
     .from("industries")
     .update(updates)
     .eq("id", id)
-    .eq("user_id", user.id)
+    .eq("user_id", auth.user!.id)
     .select()
     .single();
 
@@ -104,21 +90,14 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const supabase = await createClient();
+  const auth = await requireAdmin();
+  if (auth.error) return auth.error;
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { error } = await supabase
+  const { error } = await auth.supabase
     .from("industries")
     .delete()
     .eq("id", id)
-    .eq("user_id", user.id);
+    .eq("user_id", auth.user!.id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

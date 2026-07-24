@@ -2,12 +2,12 @@ import { openai } from "@ai-sdk/openai";
 import { streamText, zodSchema } from "ai";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAuth } from "@/lib/supabase/auth";
+import { requireAdmin } from "@/lib/supabase/auth";
 
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const auth = await requireAuth();
+  const auth = await requireAdmin();
   if (auth.error) return auth.error;
 
   const { messages } = await req.json();

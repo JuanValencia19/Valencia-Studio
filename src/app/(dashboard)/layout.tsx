@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { isAdmin } from "@/lib/admin";
 
 export default async function DashboardLayout({
   children,
@@ -14,6 +15,10 @@ export default async function DashboardLayout({
 
   if (!user) {
     redirect("/login");
+  }
+
+  if (!isAdmin(user.email ?? "")) {
+    redirect("/?unauthorized=1");
   }
 
   return (

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAuth } from "@/lib/supabase/auth";
+import { requireAdmin } from "@/lib/supabase/auth";
 import { ProposalDocument } from "@/lib/pdf/ProposalDocument";
 import { LeadReportDocument } from "@/lib/pdf/LeadReportDocument";
 import { renderToBuffer } from "@react-pdf/renderer";
@@ -9,7 +9,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const auth = await requireAuth();
+    const auth = await requireAdmin();
     if (auth.error) return auth.error;
 
     const { id } = await params;

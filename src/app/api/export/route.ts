@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { requireAuth } from "@/lib/supabase/auth";
+import { requireAdmin } from "@/lib/supabase/auth";
 
 export async function GET() {
-  const auth = await requireAuth();
+  const auth = await requireAdmin();
   if (auth.error) return auth.error;
 
   const { data: leads, error } = await auth.supabase
