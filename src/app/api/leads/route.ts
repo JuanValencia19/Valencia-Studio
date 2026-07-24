@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAuth } from "@/lib/supabase/auth";
+import { requireAdmin } from "@/lib/supabase/auth";
 import { dispatchWebhook } from "@/lib/webhooks/dispatcher";
 import { z } from "zod";
 
@@ -15,7 +15,7 @@ const CreateLeadSchema = z.object({
 });
 
 export async function GET(request: NextRequest) {
-  const auth = await requireAuth();
+  const auth = await requireAdmin();
   if (auth.error) return auth.error;
 
   const { searchParams } = new URL(request.url);
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const auth = await requireAuth();
+  const auth = await requireAdmin();
   if (auth.error) return auth.error;
 
   const body = await request.json();

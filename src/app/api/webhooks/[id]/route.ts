@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/auth";
 
 export async function GET(
   request: NextRequest,
@@ -7,21 +7,14 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const supabase = await createClient();
+    const auth = await requireAdmin();
+    if (auth.error) return auth.error;
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const { data: webhook, error } = await supabase
+    const { data: webhook, error } = await auth.supabase
       .from("webhooks")
       .select("*")
       .eq("id", id)
-      .eq("user_id", user.id)
+      .eq("user_id", auth.user!.id)
       .single();
 
     if (error || !webhook) {
@@ -44,15 +37,8 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const supabase = await createClient();
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const auth = await requireAdmin();
+    if (auth.error) return auth.error;
 
     const body = await request.json();
     const { name, url, events, is_active, secret } = body;
@@ -64,11 +50,11 @@ export async function PATCH(
     if (is_active !== undefined) updates.is_active = is_active;
     if (secret !== undefined) updates.secret = secret;
 
-    const { data: webhook, error } = await supabase
+    const { data: webhook, error } = await auth.supabase
       .from("webhooks")
       .update(updates)
       .eq("id", id)
-      .eq("user_id", user.id)
+      .eq("user_id", auth.user!.id)
       .select()
       .single();
 
@@ -92,21 +78,14 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const supabase = await createClient();
+    const auth = await requireAdmin();
+    if (auth.error) return auth.error;
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const { error } = await supabase
+    const { error } = await auth.supabase
       .from("webhooks")
       .delete()
       .eq("id", id)
-      .eq("user_id", user.id);
+      .eq("user_id", auth.user!.id);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

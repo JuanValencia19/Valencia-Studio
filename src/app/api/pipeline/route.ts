@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runPipeline, type PipelineConfig } from "@/lib/agents/pipeline";
 import { dispatchWebhook } from "@/lib/webhooks/dispatcher";
-import { requireAuth } from "@/lib/supabase/auth";
+import { requireAdmin } from "@/lib/supabase/auth";
 import { z } from "zod";
 
 const PipelineSchema = z.object({
@@ -25,7 +25,7 @@ const PipelineSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
-  const auth = await requireAuth();
+  const auth = await requireAdmin();
   if (auth.error) return auth.error;
 
   const body = await request.json();

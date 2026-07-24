@@ -1,23 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/auth";
 import { generateWebhookSecret } from "@/lib/webhooks/dispatcher";
 
 export async function GET() {
   try {
-    const supabase = await createClient();
+    const auth = await requireAdmin();
+    if (auth.error) return auth.error;
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const { data: webhooks, error } = await supabase
+    const { data: webhooks, error } = await auth.supabase
       .from("webhooks")
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id", auth.user!.id)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -36,15 +29,8 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const auth = await requireAdmin();
+    if (auth.error) return auth.error;
 
     const body = await request.json();
     const { name, url, events, secret } = body;
@@ -59,10 +45,10 @@ export async function POST(request: NextRequest) {
     // Generate secret if not provided
     const webhookSecret = secret || generateWebhookSecret();
 
-    const { data: webhook, error } = await supabase
+    const { data: webhook, error } = await auth.supabase
       .from("webhooks")
       .insert({
-        user_id: user.id,
+        user_id: auth.user!.id,
         name,
         url,
         events,
